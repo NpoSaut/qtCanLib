@@ -1,3 +1,5 @@
+#if defined WITH_CAN
+
 #include "sktcan.h"
 
 // getSocket создает и настраивает сокет на CAN-интерфейсе iface_name
@@ -98,3 +100,4 @@ int read_can_frame(int s, struct can_frame* frame)
     return 1;
 }
 
+#endif
