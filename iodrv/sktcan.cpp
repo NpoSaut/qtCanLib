@@ -42,7 +42,7 @@ int getSocket(char* iface_name)
     return s;
 }
 
-int write_can_frame(int s, struct can_frame* frame)
+int write_can_frame(int s, can_frame frame)
 {
     if (!s)
     {
@@ -51,14 +51,31 @@ int write_can_frame(int s, struct can_frame* frame)
     }
 
     errno = 0;
-    int bytes_sent = write(s, frame, sizeof(struct can_frame));
+    fprintf(stderr, "Send -> sock %d ", s );
+
+    // !!! WARNING !!!
+    // Мы не знаем, почему это нужно
+    usleep(5000);
+    int bytes_sent = write(s, &frame, sizeof(struct can_frame));
+    usleep(5000);
+
     if(bytes_sent < 0)
     {
         int errsv = errno;
-        fprintf(stderr, "send_can_frame: ошибка при отправке: %d\n", errsv);
+        fprintf(stderr, "Err %3d", errsv );
         fflush(stderr);
         return 0;
     }
+    else
+    {
+        //printf("send_can_frame: успешно отправлено %d байт", bytes_sent);
+        fprintf(stderr, "OK    ");
+    }
+    printf(" | 0x%04x | ", frame.can_id*0x20+frame.can_dlc);
+
+    for(int iii = 0; iii < frame.can_dlc; iii++)
+        printf("%02x ", frame.data[iii]);
+    printf("\n");
 /*
 //#ifdef DEBUG
     //printf("Успешно отправлено %d байт на %s\n", bytes_sent, iface_name);
