@@ -1,6 +1,14 @@
+//#define DEBUG_CAN_READ
+//#define DEBUG_CAN_SEND true
+
+
 #if defined WITH_CAN
 
 #include "sktcan.h"
+
+#include <QMutex>
+
+ QMutex mutex;
 
 // getSocket создает и настраивает сокет на CAN-интерфейсе iface_name
 int getSocket(char* iface_name)
@@ -51,37 +59,48 @@ int write_can_frame(int s, can_frame frame)
     }
 
     errno = 0;
-    fprintf(stderr, "Send -> sock %d ", s );
+
+    #ifdef DEBUG_CAN_SEND
+
+    //printf("\033[0;36;40m >>\033[0;37;40m");
+    //printf("\033[1;36;40m %d\033[0;37;40m\n", frame.can_id);
+
+    fprintf(stderr, "\033[0;33;40mSend -> sock %d \033[0;37;40m", s );
+
+    printf("\033[0;33;40m | \033[0;30;43m0x%04x\033[0;33;40m | \033[0;37;40m", frame.can_id*0x20+frame.can_dlc); fflush(stderr);
+    for(int iii = 0; iii < frame.can_dlc; iii++)
+        printf("\033[0;33;40m%02x \033[0;37;40m", frame.data[iii]); fflush(stderr);
+    printf("\033[0;33;40m | \033[0;37;40m");fflush(stderr);
+    #endif
 
     // !!! WARNING !!!
     // Мы не знаем, почему это нужно
-    usleep(5000);
+    mutex.lock();
+    usleep(100);
     int bytes_sent = write(s, &frame, sizeof(struct can_frame));
-    usleep(5000);
+    usleep(100);
+    mutex.unlock();
 
     if(bytes_sent < 0)
     {
         int errsv = errno;
-        fprintf(stderr, "Err %3d", errsv );
+        #ifdef DEBUG_CAN_SEND
+        fprintf(stderr, "\033[1;30;43mErr %3d\033[0;37;40m", errsv );fflush(stderr);
+        printf("\033[0;37;40m\n");
         fflush(stderr);
+        #endif
+
         return 0;
     }
+    #ifdef DEBUG_CAN_SEND
     else
     {
-        //printf("send_can_frame: успешно отправлено %d байт", bytes_sent);
-        fprintf(stderr, "OK    ");
+        fprintf(stderr, "\033[0;33;40mOK    \033[0;37;40m");fflush(stderr);
+        printf("\033[0;37;40m\n");
+        fflush(stderr);
     }
-    printf(" | 0x%04x | ", frame.can_id*0x20+frame.can_dlc);
+    #endif
 
-    for(int iii = 0; iii < frame.can_dlc; iii++)
-        printf("%02x ", frame.data[iii]);
-    printf("\n");
-/*
-//#ifdef DEBUG
-    //printf("Успешно отправлено %d байт на %s\n", bytes_sent, iface_name);
-    printf("send_can_frame: успешно отправлено %d байт\n", bytes_sent);
-//#endif // DEBUG
-*/
     return 1;
 }
 
@@ -94,26 +113,38 @@ int read_can_frame(int s, struct can_frame* frame)
     }
 
     errno = 0;
+
     int bytes_read = read(s, frame, sizeof(struct can_frame));
+    #ifdef DEBUG_CAN_READ
+    fprintf(stderr, "\033[0;36;40mRead <- sock %d \033[0;37;40m", s );
+
+    printf("\033[0;36;40m | \033[0;30;46m0x%04x\033[0;36;40m | \033[0;37;40m", frame->can_id*0x20+frame->can_dlc);fflush(stderr);
+    for(int iii = 0; iii < frame->can_dlc; iii++)
+        printf("\033[0;36;40m%02x \033[0;37;40m", frame->data[iii]);fflush(stderr);
+    printf("\033[0;36;40m | \033[0;37;40m");fflush(stderr);
+    #endif
+
     if(bytes_read < 0)
     {
         int errsv = errno;
-        fprintf(stderr, "read_can_frame: ошибка при чтении: %d\n", errsv);
+
+        #ifdef DEBUG_CAN_READ
+        fprintf(stderr, "\033[1;30;46mErr %3d\033[0;37;40m", errsv );fflush(stderr);
+        printf("\033[0;37;40m\n");
         fflush(stderr);
+        #endif
+
         return 0;
     }
-/*
-//#ifdef DEBUG
-    printf("read_can_frame: принято сообщение:\n");
-    printf("длина: %d\n", (*frame).can_dlc);
-    printf("id: %d\n", (*frame).can_id);
-    printf("data: [");
-    int i;
-    for(i = 0; i < 8; i++)
-        printf("0x%02x, ", (*frame).data[i]);
-    printf("]\n");
-//#endif // DEBUG
-*/
+    #ifdef DEBUG_CAN_READ
+    else
+    {
+        fprintf(stderr, "\033[0;36;40mOK    \033[0;37;40m");fflush(stderr);
+        printf("\033[0;37;40m\n");
+        fflush(stderr);
+    }
+    #endif
+
     return 1;
 }
 
