@@ -1,5 +1,5 @@
 //#define DEBUG_CAN_READ
-//#define DEBUG_CAN_SEND true
+//#define DEBUG_CAN_SEND
 
 
 #if defined WITH_CAN
