@@ -31,3 +31,4 @@ desktop.ini
 
 # Editors temporary files 
 *~
+*.autosave
