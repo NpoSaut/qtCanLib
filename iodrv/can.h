@@ -17,6 +17,10 @@ public:
     
 signals:
     void receiveNewMessage (CanFrame frame);
+
+#if defined WITH_CAN
+    void transmitToIoDrv (const struct can_frame* frame);
+#endif
     
 public slots:
     void transmitMessage (CanFrame frame);
