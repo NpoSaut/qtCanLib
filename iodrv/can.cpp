@@ -10,14 +10,13 @@ Can::Can(QObject *parent) :
 void Can::transmitMessage (CanFrame frame)
 {
 #if defined WITH_CAN
-    can_frame linuxFrame = frame;
-    emit transmitToIoDrv ( &linuxFrame );
+    emit transmitToIoDrv ( frame );
 #endif
 }
 
 #if defined WITH_CAN
-void Can::receiveFromIoDrv (const struct can_frame* frame)
+void Can::receiveFromIoDrv (CanFrame frame)
 {
-    emit receiveNewMessage (CanFrame (frame));
+    emit receiveNewMessage (frame);
 }
 #endif
