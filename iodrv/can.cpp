@@ -9,7 +9,9 @@ Can::Can(QObject *parent) :
 
 void Can::transmitMessage (CanFrame frame)
 {
+#if defined WITH_CAN
     emit transmitToIoDrv ( frame );
+#endif
 }
 
 #if defined WITH_CAN
