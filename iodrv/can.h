@@ -19,14 +19,14 @@ signals:
     void receiveNewMessage (CanFrame frame);
 
 #if defined WITH_CAN
-    void transmitToIoDrv (const struct can_frame* frame);
+    void transmitToIoDrv (CanFrame frame);
 #endif
     
 public slots:
     void transmitMessage (CanFrame frame);
 
 #if defined WITH_CAN
-    void receiveFromIoDrv (const struct can_frame* frame);
+    void receiveFromIoDrv (CanFrame frame);
 #endif
     
 };
