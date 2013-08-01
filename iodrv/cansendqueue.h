@@ -1,5 +1,5 @@
-#ifndef CANSENDER_H
-#define CANSENDER_H
+#ifndef CANSENDQUEUE_H
+#define CANSENDQUEUE_H
 
 #include "queues.h"
 #include "canframe.h"
@@ -7,18 +7,20 @@
 namespace CanInternals
 {
 
-    class CanSender : Queues::PriorityQueueBase<CanFrame>
+    class CanSendQueue : Queues::PriorityQueueBase<CanFrame>
     {
         public:
-            CanSender()
+            CanSendQueue()
                 : Queues::PriorityQueueBase<CanFrame>()
             {}
-            void Push(CanFrame f);
+            void push(CanFrame f);
 
         protected:
             void process(CanFrame f);
             int compare(CanFrame a, CanFrame b);
     };
+    extern CanSendQueue canSendQueue;
 
 }
-#endif // CANSENDER_H
+
+#endif // CANSENDQUEUE_H
