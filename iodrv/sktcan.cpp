@@ -10,6 +10,8 @@
 
  QMutex mutex;
 
+ using namespace CanInternals;
+
 // getSocket создает и настраивает сокет на CAN-интерфейсе iface_name
 int getSocket(char* iface_name)
 {
