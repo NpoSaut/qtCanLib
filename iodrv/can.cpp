@@ -8,7 +8,7 @@ Can::Can(QObject *parent) :
     QObject(parent)
 {
     qRegisterMetaType<CanFrame>("CanFrame");
-    QObject::connect (&CanInternals::readSocketLoop, SIGNAL(newMessageReceived(CanFrame)),
+    QObject::connect (&CanInternals::readSocketLoop, SIGNAL(messageReceived(CanFrame)),
                       this, SLOT(receiveFromSocketCan(CanFrame)));
 }
 
@@ -20,6 +20,6 @@ void Can::transmitMessage (CanFrame frame)
 #if defined WITH_CAN
 void Can::receiveFromSocketCan(CanFrame frame)
 {
-    emit newMessageReceived (frame);
+    emit messageReceived (frame);
 }
 #endif

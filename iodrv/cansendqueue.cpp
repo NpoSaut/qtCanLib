@@ -1,3 +1,4 @@
+#include "unistd.h"
 
 #include "masqarade.h"
 #include "sktcan.h"
@@ -14,6 +15,7 @@ void CanSendQueue::push(CanFrame f)
 
 void CanSendQueue::process(CanFrame f)
 {
+    usleep (5000);
     writeSocket.send (f);
 }
 

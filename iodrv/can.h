@@ -16,7 +16,7 @@ public:
     explicit Can(QObject *parent = 0);
     
 signals:
-    void newMessageReceived (CanFrame frame);
+    void messageReceived (CanFrame frame);
 
 public slots:
     void transmitMessage (CanFrame frame);
