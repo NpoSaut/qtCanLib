@@ -64,60 +64,6 @@ int CanInternals::getSocket(char* iface_name)
     return s;
 }
 
-int CanInternals::write_can_frame(int s, can_frame frame)
-{
-    if (!s)
-    {
-        printf("send_can_frame: сокет не существует\n");
-        fflush(stdout);
-    }
-
-    errno = 0;
-
-    #ifdef DEBUG_CAN_SEND
-
-    //printf("\033[0;36;40m >>\033[0;37;40m");
-    //printf("\033[1;36;40m %d\033[0;37;40m\n", frame.can_id);
-
-    fprintf(stderr, "\033[0;33;40mSend -> sock %d \033[0;37;40m", s );
-
-    printf("\033[0;33;40m | \033[0;30;43m0x%04x\033[0;33;40m | \033[0;37;40m", frame.can_id*0x20+frame.can_dlc); fflush(stderr);
-    for(int iii = 0; iii < frame.can_dlc; iii++)
-        printf("\033[0;33;40m%02x \033[0;37;40m", frame.data[iii]); fflush(stderr);
-    printf("\033[0;33;40m | \033[0;37;40m");fflush(stderr);
-    #endif
-
-    // !!! WARNING !!!
-    // Мы не знаем, почему это нужно
-    mutex.lock();
-    usleep(100);
-    int bytes_sent = write(s, &frame, sizeof(struct can_frame));
-    usleep(100);
-    mutex.unlock();
-
-    if(bytes_sent < 0)
-    {
-        int errsv = errno;
-        #ifdef DEBUG_CAN_SEND
-        fprintf(stderr, "\033[1;30;43mErr %3d\033[0;37;40m", errsv );fflush(stderr);
-        printf("\033[0;37;40m\n");
-        fflush(stderr);
-        #endif
-
-        return 0;
-    }
-    #ifdef DEBUG_CAN_SEND
-    else
-    {
-        fprintf(stderr, "\033[0;33;40mOK    \033[0;37;40m");fflush(stderr);
-        printf("\033[0;37;40m\n");
-        fflush(stderr);
-    }
-    #endif
-
-    return 1;
-}
-
 int CanInternals::read_can_frame(int s, struct can_frame* frame)
 {
     if (!s)
@@ -293,6 +239,22 @@ CanFrame ReadSocket::read()
         #endif
 
         return frame;
+    }
+}
+
+ReadSocketLoop CanInternals::readSocketLoop ("can0");
+
+ReadSocketLoop::ReadSocketLoop(QString interfaceName)
+    : readSocket (interfaceName)
+{
+    this->start ();
+}
+
+void ReadSocketLoop::run()
+{
+    while (true)
+    {
+        emit newMessageReceived (readSocket.read ());
     }
 }
 

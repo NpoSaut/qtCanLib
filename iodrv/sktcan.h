@@ -4,13 +4,14 @@
 #define SKTCAN_H
 
 #include <QString>
+#include <QThread>
 
 #include "canframe.h"
 
 namespace CanInternals
 {
     int getSocket(char* iface_name);
-    int write_can_frame(int s, can_frame frame);
+//    int write_can_frame(int s, can_frame frame);
     int read_can_frame(int s, struct can_frame* frame);
 
     class Socket
@@ -39,6 +40,23 @@ namespace CanInternals
 
             CanFrame read ();
     };
+
+    class ReadSocketLoop : public QThread
+    {
+        Q_OBJECT
+    public:
+        ReadSocketLoop (QString interfaceName);
+
+    signals:
+        void newMessageReceived (CanFrame frame);
+
+    private:
+        ReadSocket readSocket;
+
+        void run ();
+    };
+    extern ReadSocketLoop readSocketLoop;
+
 }
 #endif // SKTCAN_H
 

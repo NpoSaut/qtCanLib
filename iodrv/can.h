@@ -16,21 +16,17 @@ public:
     explicit Can(QObject *parent = 0);
     
 signals:
-    void receiveNewMessage (CanFrame frame);
+    void newMessageReceived (CanFrame frame);
 
-#if defined WITH_CAN
-    void transmitToIoDrv (CanFrame frame);
-#endif
-    
 public slots:
     void transmitMessage (CanFrame frame);
 
 #if defined WITH_CAN
-    void receiveFromIoDrv (CanFrame frame);
+    void receiveFromSocketCan (CanFrame frame);
 #endif
     
 };
 
-extern Can canDev;
+extern Can can;
 
 #endif // IODRV_CAN_H
