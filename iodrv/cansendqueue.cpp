@@ -15,8 +15,9 @@ void CanSendQueue::push(CanFrame f)
 
 void CanSendQueue::process(CanFrame f)
 {
-    usleep (5000);
+    usleep (100);
     writeSocket.send (f);
+    usleep (100);
 }
 
 int CanSendQueue::compare(CanFrame a, CanFrame b)

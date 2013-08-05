@@ -19,10 +19,9 @@
 #include "sktcan.h"
 
 
-QMutex mutex;
-
 using namespace CanInternals;
 
+// ------------------------------------- Socket --------------------------------------------------
 
 Socket::Socket(QString interfaceName)
     : number (0), ready (false)
@@ -59,6 +58,62 @@ Socket::Socket(QString interfaceName)
     ready = (number != 0);
 }
 
+// ------------------------------------- DEBUG ---------------------------------------------------
+
+void debugWrite (int socketNumber, const CanFrame& frame)
+{
+    #ifdef DEBUG_CAN_SEND
+    //printf("\033[0;36;40m >>\033[0;37;40m");
+    //printf("\033[1;36;40m %d\033[0;37;40m\n", frame.can_id);
+
+    fprintf(stderr, "\033[0;33;40mSend -> sock %d \033[0;37;40m", socketNumber );
+
+    printf("\033[0;33;40m | \033[0;30;43m0x%04x\033[0;33;40m | \033[0;37;40m", frame.getDescriptor ()); fflush(stderr);
+    for(int iii = 0; iii < frame.getData ().size (); iii++)
+        printf("\033[0;33;40m%02x \033[0;37;40m", frame.getData ()[iii]); fflush(stderr);
+    printf("\033[0;33;40m | \033[0;37;40m");fflush(stderr);
+    #endif
+}
+
+void debugRead (int socketNumber, const CanFrame& frame)
+{
+    #ifdef DEBUG_CAN_READ
+    fprintf(stderr, "\033[0;36;40mRead <- sock %d \033[0;37;40m", socketNumber );
+
+    printf("\033[0;36;40m | \033[0;30;46m0x%04x\033[0;36;40m | \033[0;37;40m", frame.getDescriptor ());fflush(stderr);
+    for(int iii = 0; iii < frame.getData ().size (); iii++)
+        printf("\033[0;36;40m%02x \033[0;37;40m", frame.getData ()[iii]);fflush(stderr);
+    printf("\033[0;36;40m | \033[0;37;40m");fflush(stderr);
+
+    int errsv = errno;
+    fprintf(stderr, "\033[1;30;46mErr %3d\033[0;37;40m", errsv );fflush(stderr);
+    printf("\033[0;37;40m\n");
+    fflush(stderr);
+
+    #endif
+}
+
+void debugStatus (bool success)
+{
+    #ifdef DEBUG_CAN_SEND
+    if(success)
+    {
+        int errsv = errno;
+        fprintf(stderr, "\033[1;30;46mErr %3d\033[0;37;40m", errsv );fflush(stderr);
+        printf("\033[0;37;40m\n");
+        fflush(stderr);
+    }
+    else
+    {
+        fprintf(stderr, "\033[0;36;40mOK    \033[0;37;40m");fflush(stderr);
+        printf("\033[0;37;40m\n");
+        fflush(stderr);
+    }
+    #endif
+}
+
+// ---------------------------------- WriteSocket ------------------------------------------------
+
 WriteSocket CanInternals::writeSocket ("can0");
 
 WriteSocket::WriteSocket(QString interfaceName)
@@ -74,43 +129,18 @@ bool WriteSocket::send(CanFrame frame)
     }
     else
     {
-        #ifdef DEBUG_CAN_SEND
-        //printf("\033[0;36;40m >>\033[0;37;40m");
-        //printf("\033[1;36;40m %d\033[0;37;40m\n", frame.can_id);
-
-        fprintf(stderr, "\033[0;33;40mSend -> sock %d \033[0;37;40m", Socket::number );
-
-        printf("\033[0;33;40m | \033[0;30;43m0x%04x\033[0;33;40m | \033[0;37;40m", frame.getDescriptor ()); fflush(stderr);
-        for(int iii = 0; iii < frame.getData ().size (); iii++)
-            printf("\033[0;33;40m%02x \033[0;37;40m", frame.getData ()[iii]); fflush(stderr);
-        printf("\033[0;33;40m | \033[0;37;40m");fflush(stderr);
-        #endif
+        debugWrite (Socket::number, frame);
 
         can_frame linuxFrame = frame;
         int bytes_sent = write(Socket::number, &linuxFrame, sizeof(struct can_frame));
 
-        if(bytes_sent < 0)
-        {
-            #ifdef DEBUG_CAN_SEND
-            int errsv = errno;
-            fprintf(stderr, "\033[1;30;43mErr %3d\033[0;37;40m", errsv );fflush(stderr);
-            printf("\033[0;37;40m\n");
-            fflush(stderr);
-            #endif
-        }
-        #ifdef DEBUG_CAN_SEND
-        else
-        {
-            fprintf(stderr, "\033[0;33;40mOK    \033[0;37;40m");fflush(stderr);
-            printf("\033[0;37;40m\n");
-            fflush(stderr);
-        }
-        #endif
+        debugStatus (bytes_sent >= 0);
 
         return (bytes_sent >= 0);
     }
 }
 
+// ---------------------------------- ReadSocket -------------------------------------------------
 
 ReadSocket::ReadSocket(QString interfaceName)
     : Socket (interfaceName)
@@ -131,32 +161,13 @@ CanFrame ReadSocket::read()
             bytes_read = ::read(Socket::number, &linuxFrame, sizeof(struct can_frame));
         CanFrame frame (linuxFrame);
 
-        #ifdef DEBUG_CAN_READ
-        fprintf(stderr, "\033[0;36;40mRead <- sock %d \033[0;37;40m", Socket::number );
-
-        printf("\033[0;36;40m | \033[0;30;46m0x%04x\033[0;36;40m | \033[0;37;40m", frame.getDescriptor ());fflush(stderr);
-        for(int iii = 0; iii < frame.getData ().size (); iii++)
-            printf("\033[0;36;40m%02x \033[0;37;40m", frame.getData ()[iii]);fflush(stderr);
-        printf("\033[0;36;40m | \033[0;37;40m");fflush(stderr);
-
-        if(bytes_read < 0)
-        {
-            int errsv = errno;
-            fprintf(stderr, "\033[1;30;46mErr %3d\033[0;37;40m", errsv );fflush(stderr);
-            printf("\033[0;37;40m\n");
-            fflush(stderr);
-        }
-        else
-        {
-            fprintf(stderr, "\033[0;36;40mOK    \033[0;37;40m");fflush(stderr);
-            printf("\033[0;37;40m\n");
-            fflush(stderr);
-        }
-        #endif
+        debugRead (Socket::number, frame);
 
         return frame;
     }
 }
+
+// ------------------------------- ReadSocketThread ----------------------------------------------
 
 ReadSocketThread CanInternals::readSocketLoop ("can0");
 
