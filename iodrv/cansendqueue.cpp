@@ -1,6 +1,6 @@
 #include "unistd.h"
 
-#include "masqarade.h"
+#include "cDoodahLib/masqarade.h"
 #include "sktcan.h"
 #include "cansendqueue.h"
 
