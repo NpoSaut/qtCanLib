@@ -1,10 +1,6 @@
 #ifndef IODRV_CAN_H
 #define IODRV_CAN_H
 
-#if defined WITH_CAN
-#include <linux/can.h>
-#endif
-
 #include <QObject>
 
 #include "canframe.h"
@@ -15,15 +11,17 @@ class Can : public QObject
 public:
     explicit Can(QObject *parent = 0);
     
+// Interaction with user
 signals:
     void messageReceived (CanFrame frame);
-
 public slots:
     void transmitMessage (CanFrame frame);
 
-#if defined WITH_CAN
-    void receiveFromSocketCan (CanFrame frame);
-#endif
+// Interaction with underlying CAN driver
+signals:
+    void messageToTransmitAppear (CanFrame frame);
+private slots:
+    void getMessageFromDriver (CanFrame frame);
     
 };
 

@@ -1,6 +1,7 @@
+#include "can.h"
+
 #include "socketcan/sktcan.h"
 #include "socketcan/cansendqueue.h"
-#include "can.h"
 
 Can can;
 
@@ -8,8 +9,13 @@ Can::Can(QObject *parent) :
     QObject(parent)
 {
     qRegisterMetaType<CanFrame>("CanFrame");
+
     QObject::connect (&CanInternals::readSocketLoop, SIGNAL(messageReceived(CanFrame)),
-                      this, SLOT(receiveFromSocketCan(CanFrame)));
+                      this, SLOT(getMessageFromDriver(CanFrame)));
+
+    // It can't be done, because CanSendQueue is not QObject child
+//    QObject::connect (this, SIGNAL(messageToTransmitAppear(CanFrame)),
+//                      &CanInternals::canSendQueue, SLOT(push(CanFrame)));
 }
 
 void Can::transmitMessage (CanFrame frame)
@@ -17,9 +23,7 @@ void Can::transmitMessage (CanFrame frame)
     CanInternals::canSendQueue.push (frame);
 }
 
-#if defined WITH_CAN
-void Can::receiveFromSocketCan(CanFrame frame)
+void Can::getMessageFromDriver (CanFrame frame)
 {
     emit messageReceived (frame);
 }
-#endif
