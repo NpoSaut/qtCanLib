@@ -21,6 +21,35 @@
 
 using namespace CanInternals;
 
+// ------------------------------------- Convert -------------------------------------------------
+
+CanFrame CanInternals::convert (const struct can_frame &socketFrame)
+{
+    return CanFrame ( socketFrame.can_id&0x1FFF, socketFrame.can_dlc,
+                      std::vector<unsigned char> (socketFrame.data, socketFrame.data + socketFrame.can_dlc));
+}
+
+CanFrame CanInternals::convert (const struct can_frame *socketFrame)
+{
+    return CanFrame ( socketFrame->can_id&0x1FFF, socketFrame->can_dlc,
+                      std::vector<unsigned char> (socketFrame->data, socketFrame->data + socketFrame->can_dlc) );
+}
+
+can_frame CanInternals::convert (const CanFrame &canFrame)
+{
+    can_frame frame;
+
+    frame.can_id = canFrame.getId ();
+    frame.can_dlc = canFrame.getData().size ();
+    int i = 0;
+    for( ; i < canFrame.getData().size (); i ++ )
+        frame.data[i] = canFrame.getData()[i];
+    for ( ; i < 8; i ++ )
+        frame.data[i] = 0;
+
+    return frame;
+}
+
 // ------------------------------------- Socket --------------------------------------------------
 
 Socket::Socket(QString interfaceName)
@@ -131,7 +160,7 @@ bool WriteSocket::send(CanFrame frame)
     {
         debugWrite (Socket::number, frame);
 
-        can_frame linuxFrame = frame;
+        can_frame linuxFrame = convert (frame);
         int bytes_sent = write(Socket::number, &linuxFrame, sizeof(struct can_frame));
 
         debugStatus (bytes_sent >= 0);
@@ -159,7 +188,7 @@ CanFrame ReadSocket::read()
         int bytes_read = -1;
         while (bytes_read < 0)
             bytes_read = ::read(Socket::number, &linuxFrame, sizeof(struct can_frame));
-        CanFrame frame (linuxFrame);
+        CanFrame frame = convert (linuxFrame);
 
         debugRead (Socket::number, frame);
 

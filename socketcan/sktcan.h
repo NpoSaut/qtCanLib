@@ -3,13 +3,19 @@
 #ifndef SKTCAN_H
 #define SKTCAN_H
 
+#include <linux/can.h>
+
 #include <QString>
 #include <QThread>
 
-#include "canframe.h"
+#include "../canframe.h"
 
 namespace CanInternals
 {
+    CanFrame convert (const struct can_frame &socketFrame);
+    CanFrame convert (const struct can_frame *socketFrame);
+    can_frame convert (const CanFrame &canFrame);
+
     class Socket
     {
         public:

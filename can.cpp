@@ -1,5 +1,5 @@
-#include "sktcan.h"
-#include "cansendqueue.h"
+#include "socketcan/sktcan.h"
+#include "socketcan/cansendqueue.h"
 #include "can.h"
 
 Can can;
