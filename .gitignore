@@ -18,3 +18,17 @@ moc_*.cpp
 qrc_*.cpp
 Makefile
 *-build-*
+
+# Debug and Release directories (created under Windows, not Linux)
+Debug/
+Release/
+
+# Windows-specific files
+Thumbs.db
+desktop.ini
+# Mac-specific things (thanks to Michael Aaron Safyan)
+.DS_Store
+
+# Editors temporary files 
+*~
+*.autosave
