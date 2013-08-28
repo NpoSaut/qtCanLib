@@ -1,7 +1,7 @@
 #ifndef CANSENDQUEUE_H
 #define CANSENDQUEUE_H
 
-#include "queues.h"
+#include "qtDoodahLib/queues.h"
 #include "canframe.h"
 
 namespace CanInternals
