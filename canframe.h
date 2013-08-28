@@ -19,6 +19,10 @@ public:
     const std::vector<unsigned char> &getData() const;
     void setData(const std::vector<unsigned char> &data);
 
+    // !WARNING! --< CAN message byte numbers start from 1 >-- !WARNING!
+    unsigned char &operator[] (int index);
+    const unsigned char &operator[] (int index) const;
+
 private:
     std::vector<unsigned char> data;
     int id;

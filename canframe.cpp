@@ -50,6 +50,16 @@ void CanFrame::setData(const vector<unsigned char> &data)
     this->data = data;
 }
 
+unsigned char &CanFrame::operator [](int index)
+{
+    return data[index-1];
+}
+
+const unsigned char &CanFrame::operator [](int index) const
+{
+    return data[index-1];
+}
+
 int CanFrame::checkSize(int size)
 {
     if (size < 0) return 0;
