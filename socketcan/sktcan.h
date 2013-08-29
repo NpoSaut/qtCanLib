@@ -1,4 +1,4 @@
-#if defined WITH_CAN || defined WITH_SERIAL
+#if defined WITH_CAN || defined WITH_SERIALPORT
 
 #ifndef SKTCAN_H
 #define SKTCAN_H
