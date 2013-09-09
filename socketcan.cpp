@@ -1,12 +1,13 @@
+#ifndef WIN32
+
 #include "can.h"
 
+#include "socketcan.h"
 #include "socketcan/sktcan.h"
 #include "socketcan/cansendqueue.h"
 
-Can can;
-
-Can::Can(QObject *parent) :
-    QObject(parent)
+SocketCan::SocketCan(QObject *parent) :
+    Can(parent)
 {
     qRegisterMetaType<CanFrame>("CanFrame");
 
@@ -18,12 +19,14 @@ Can::Can(QObject *parent) :
 //                      &CanInternals::canSendQueue, SLOT(push(CanFrame)));
 }
 
-void Can::transmitMessage (CanFrame frame)
+void SocketCan::onTransmitMessage (CanFrame frame)
 {
     CanInternals::canSendQueue.push (frame);
 }
 
-void Can::getMessageFromDriver (CanFrame frame)
+void SocketCan::onGetMessage (CanFrame frame)
 {
     emit messageReceived (frame);
 }
+
+#endif

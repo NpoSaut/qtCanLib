@@ -1,4 +1,7 @@
+#ifndef WIN32
+
 #include "unistd.h"
+
 
 #include "cDoodahLib/masqarade.h"
 #include "sktcan.h"
@@ -22,3 +25,5 @@ int CanSendQueue::compare(CanFrame a, CanFrame b)
 {
     return b.getId() - a.getId();
 }
+
+#endif

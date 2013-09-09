@@ -14,6 +14,12 @@ CanFrame::CanFrame(int descriptor, const vector<unsigned char> &data)
     setDescriptor (descriptor);
 }
 
+CanFrame::CanFrame(int descriptor)
+    : data(std::vector<unsigned char>(getSizeFromDescriptor(descriptor), 0))
+{
+    setDescriptor(descriptor);
+}
+
 CanFrame::CanFrame()
     : data(), id(0)
 { }
@@ -36,7 +42,7 @@ int CanFrame::getDescriptor() const
 void CanFrame::setDescriptor(int descriptor)
 {
     id = descriptor / 0x20;
-    int size = checkSize (descriptor & 0xF);
+    int size = getSizeFromDescriptor(descriptor);
     data.resize (size);
 }
 
@@ -58,6 +64,11 @@ unsigned char &CanFrame::operator [](int index)
 const unsigned char &CanFrame::operator [](int index) const
 {
     return data[index-1];
+}
+
+int CanFrame::getSizeFromDescriptor(int descriptor)
+{
+    return checkSize(descriptor & 0x0F);
 }
 
 int CanFrame::checkSize(int size)

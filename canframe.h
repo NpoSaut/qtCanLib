@@ -8,6 +8,7 @@ class CanFrame
 public:
     CanFrame(int id, int size, const std::vector<unsigned char>& data);
     CanFrame(int descriptor, const std::vector<unsigned char>& data);
+    CanFrame(int descriptor);
     CanFrame();
 
     int getId() const;
@@ -27,6 +28,7 @@ private:
     std::vector<unsigned char> data;
     int id;
 
+    inline int getSizeFromDescriptor(int descriptor);
     inline int checkSize(int size);
 };
 
