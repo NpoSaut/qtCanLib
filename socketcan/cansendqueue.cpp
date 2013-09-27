@@ -1,4 +1,4 @@
-#ifndef WIN32
+#ifdef WITH_CAN
 
 #include "unistd.h"
 

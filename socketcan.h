@@ -3,7 +3,7 @@
 
 #include "can.h"
 
-class SocketCan : Can
+class SocketCan : public Can
 {
 public:
     explicit SocketCan(QObject *parent = 0);
