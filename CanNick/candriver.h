@@ -24,8 +24,8 @@ namespace CanInternals
   {
     DWORD id;
     DWORD period;
-    int counter;                //значение не важно
-    byte control;               //должен быть больше 0
+    int counter;                //Р·РЅР°С‡РµРЅРёРµ РЅРµ РІР°Р¶РЅРѕ
+    byte control;               //РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0
     byte dataLength;
     byte data[8];
   };

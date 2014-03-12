@@ -3,9 +3,9 @@
 
 #include <QThread>
 #include <QTimer>
+#include "../canframe.h"
+#include "../can.h"
 #include "candriver.h"
-#include "Can/canframe.h"
-#include "Can/can.h"
 
 namespace CanInternals
 {
