@@ -13,12 +13,12 @@ CanNick::CanNick(QObject *parent) :
 
 }
 
-void Can::transmitMessage(CanFrame frame)
+void CanNick::onTransmitMessage(CanFrame frame)
 {
     CanInternals::transmit(frame);
 }
 
-void Can::getMessageFromDriver(CanFrame frame)
+void CanNick::onGetMessage(CanFrame frame)
 {
     emit messageReceived(frame);
 }

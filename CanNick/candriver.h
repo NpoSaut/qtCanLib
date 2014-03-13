@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <windows.h>
 #include <vector>
-#include "Can/canframe.h"
+#include "qtCanLib/canframe.h"
 
 namespace CanInternals
 {
