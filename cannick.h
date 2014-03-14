@@ -1,6 +1,8 @@
 #ifndef CANNICK_H
 #define CANNICK_H
 
+#ifdef LIB_CAN_NICK
+
 #include "can.h"
 
 class CanNick : public Can
@@ -12,5 +14,6 @@ protected:
     void onGetMessage(CanFrame frame);
 };
 
+#endif // LIB_CAN_NICK
 
 #endif // CANNICK_H

@@ -1,7 +1,10 @@
+#ifdef LIB_CAN_NICK
+
 #include "cannick.h"
 
-#include "CanNick/workingwithmessage.h"
+#include <QMetaType>
 
+#include "CanNick/workingwithmessage.h"
 
 CanNick::CanNick(QObject *parent) :
     Can(parent)
@@ -22,3 +25,5 @@ void CanNick::onGetMessage(CanFrame frame)
 {
     emit messageReceived(frame);
 }
+
+#endif // LIB_CAN_NICK

@@ -1,4 +1,4 @@
-#ifdef WITH_CAN
+#ifdef LIB_SOCKET_CAN
 
 #include "unistd.h"
 
@@ -26,4 +26,4 @@ int CanSendQueue::compare(CanFrame a, CanFrame b)
     return b.getId() - a.getId();
 }
 
-#endif
+#endif // LIB_SOCKET_CAN

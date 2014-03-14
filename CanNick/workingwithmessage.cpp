@@ -1,3 +1,5 @@
+#ifdef LIB_CAN_NICK
+
 #include "workingwithmessage.h"
 
 namespace CanInternals
@@ -51,4 +53,4 @@ void ReceiveMessageThread::run()
 }
 }
 
-
+#endif // LIB_CAN_NICK

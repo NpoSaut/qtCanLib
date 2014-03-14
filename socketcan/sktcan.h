@@ -1,7 +1,7 @@
-#if defined WITH_CAN || defined WITH_SERIALPORT
-
 #ifndef SKTCAN_H
 #define SKTCAN_H
+
+#if defined LIB_SOCKET_CAN
 
 #include <linux/can.h>
 
@@ -60,6 +60,7 @@ namespace CanInternals
     extern ReadSocketThread readSocketLoop;
 
 }
-#endif // SKTCAN_H
 
-#endif
+#endif // LIB_SOCKET_CAN
+
+#endif // SKTCAN_H

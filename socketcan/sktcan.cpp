@@ -1,8 +1,4 @@
-//#define DEBUG_CAN_READ
-//#define DEBUG_CAN_SEND
-
-
-#if defined WITH_CAN
+#if defined LIB_SOCKET_CAN
 
 #include <errno.h>
 #include <sys/types.h>
@@ -18,6 +14,8 @@
 
 #include "sktcan.h"
 
+//#define DEBUG_CAN_READ
+//#define DEBUG_CAN_SEND
 
 using namespace CanInternals;
 
@@ -214,5 +212,5 @@ void ReadSocketThread::run()
     }
 }
 
-#endif
+#endif // LIB_SOCKET_CAN
 

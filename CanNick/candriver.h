@@ -1,6 +1,8 @@
 #ifndef CANDRIVER_H
 #define CANDRIVER_H
 
+#ifdef LIB_CAN_NICK
+
 #include <QObject>
 #include <QDebug>
 #include <windows.h>
@@ -70,4 +72,7 @@ namespace CanInternals
 
   };
 }
+
+#endif // LIB_CAN_NICK
+
 #endif // CANDRIVER_H

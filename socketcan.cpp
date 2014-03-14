@@ -1,4 +1,4 @@
-#ifdef WITH_CAN
+#ifdef LIB_SOCKET_CAN
 
 #include "can.h"
 
@@ -29,4 +29,4 @@ void SocketCan::onGetMessage (CanFrame frame)
     emit messageReceived (frame);
 }
 
-#endif
+#endif // LIB_SOCKET_CAN

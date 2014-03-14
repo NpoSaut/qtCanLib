@@ -1,5 +1,8 @@
+#ifdef LIB_CAN_NICK
+
 #include "candriver.h"
 #include "Log/logwriter.h"
+
 namespace CanInternals
 {
 CanDriver::CanDriver(QObject *parent) :
@@ -110,3 +113,5 @@ CanDriver::~CanDriver()
 
 
 }
+
+#endif // LIB_CAN_NICK

@@ -1,6 +1,8 @@
 #ifndef WORKINGWITHMESSAGE_H
 #define WORKINGWITHMESSAGE_H
 
+#ifdef LIB_CAN_NICK
+
 #include <QThread>
 #include <QTimer>
 #include "../canframe.h"
@@ -29,4 +31,7 @@ namespace CanInternals
   extern ReceiveMessageThread receiveMessagetLoop;
 
 }
+
+#endif // LIB_CAN_NICK
+
 #endif // WORKINGWITHMESSAGE_H
