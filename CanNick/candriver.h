@@ -39,13 +39,14 @@ namespace CanInternals
     explicit CanDriver(QObject *parent = 0);
     ~CanDriver();
 
-      void start ();
-      void stop ();
-
     std::vector<StructForDrv> receiveMessage();
     int transmitMessage(TransmitData &td);
 
     bool canEnable;
+
+  public slots:
+    void start ();
+    void stop ();
 
   private:
     bool deviceIo(DWORD code, LPVOID *inBuffer, DWORD inBufferSize, LPVOID *outBuffer, DWORD outBufferSize);
@@ -66,9 +67,6 @@ namespace CanInternals
 
 
   signals:
-
-
-  public slots:
 
   };
 }
