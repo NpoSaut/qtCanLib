@@ -209,6 +209,7 @@ void ReadSocketThread::run()
     while (true)
     {
         emit messageReceived (readSocket.read ());
+        usleep (0);
     }
 }
 
