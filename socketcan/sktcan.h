@@ -40,7 +40,7 @@ namespace CanInternals
         public:
             ReadSocket (QString interfaceName);
 
-            CanFrame read ();
+            bool read (CanFrame &frame);
     };
 
     class ReadSocketThread : public QThread

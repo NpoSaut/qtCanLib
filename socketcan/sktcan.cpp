@@ -173,24 +173,27 @@ ReadSocket::ReadSocket(QString interfaceName)
     : Socket (interfaceName)
 { }
 
-CanFrame ReadSocket::read()
+bool ReadSocket::read(CanFrame &frame)
 {
     if (!Socket::ready)
     {
         qDebug("ReadSocket: сокет не существует");
-        return CanFrame();
+        return false;
     }
     else
     {
         can_frame linuxFrame;
         int bytes_read = -1;
-        while (bytes_read < 0)
-            bytes_read = ::read(Socket::number, &linuxFrame, sizeof(struct can_frame));
-        CanFrame frame = convert (linuxFrame);
+        bytes_read = ::read(Socket::number, &linuxFrame, sizeof(struct can_frame));
 
-        debugRead (Socket::number, frame);
-
-        return frame;
+        if (bytes_read < 0)
+            return false;
+        else
+        {
+            frame = convert (linuxFrame);
+            debugRead (Socket::number, frame);
+            return true;
+        }
     }
 }
 
@@ -206,10 +209,13 @@ ReadSocketThread::ReadSocketThread(QString interfaceName)
 
 void ReadSocketThread::run()
 {
-    while (true)
+    forever
     {
-        emit messageReceived (readSocket.read ());
-        usleep (0);
+        CanFrame frame;
+        if ( readSocket.read (frame) )
+            emit messageReceived (frame);
+        else
+            usleep (10);
     }
 }
 
