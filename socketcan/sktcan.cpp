@@ -2,7 +2,7 @@
 //#define DEBUG_CAN_SEND
 
 
-#if defined WITH_CAN
+#if defined LIB_SOCKET_CAN
 
 #include <errno.h>
 #include <sys/types.h>

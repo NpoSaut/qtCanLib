@@ -1,4 +1,4 @@
-#ifdef WITH_CAN
+#ifdef LIB_SOCKET_CAN
 
 #include "unistd.h"
 

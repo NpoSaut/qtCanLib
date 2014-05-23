@@ -1,4 +1,4 @@
-#ifdef WITH_CAN
+#ifdef LIB_SOCKET_CAN
 
 #include "can.h"
 
@@ -9,8 +9,6 @@
 SocketCan::SocketCan(QObject *parent) :
     Can(parent)
 {
-    qRegisterMetaType<CanFrame>("CanFrame");
-
     QObject::connect (&CanInternals::readSocketLoop, SIGNAL(messageReceived(CanFrame)),
                       this, SLOT(getMessageFromDriver(CanFrame)));
 
