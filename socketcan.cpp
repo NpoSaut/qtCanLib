@@ -27,4 +27,4 @@ void SocketCan::onGetMessage (CanFrame frame)
     emit messageReceived (frame);
 }
 
-#endif
+#endif // LIB_SOCKET_CAN

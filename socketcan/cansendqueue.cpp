@@ -26,4 +26,4 @@ int CanSendQueue::compare(CanFrame a, CanFrame b)
     return b.getId() - a.getId();
 }
 
-#endif
+#endif // LIB_SOCKET_CAN

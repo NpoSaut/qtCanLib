@@ -1,6 +1,8 @@
 #ifndef CANSENDQUEUE_H
 #define CANSENDQUEUE_H
 
+#ifdef LIB_SOCKET_CAN
+
 #include "qtDoodahLib/queues.h"
 #include "../canframe.h"
 
@@ -22,5 +24,7 @@ namespace CanInternals
     extern CanSendQueue canSendQueue;
 
 }
+
+#endif // LIB_SOCKET_CAN
 
 #endif // CANSENDQUEUE_H

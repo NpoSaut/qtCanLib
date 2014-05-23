@@ -9,8 +9,9 @@ class DummyCan : public Can
     Q_OBJECT
 public:
     explicit DummyCan(QObject *parent = 0)
-        : Can(parent)
+        : Can (parent)
     { }
+
 protected:
     void onTransmitMessage(CanFrame frame) { }
     void onGetMessage(CanFrame frame) { }

@@ -1,6 +1,8 @@
 #ifndef SOCKETCAN_H
 #define SOCKETCAN_H
 
+#ifdef LIB_SOCKET_CAN
+
 #include "can.h"
 
 class SocketCan : public Can
@@ -12,5 +14,6 @@ protected:
     void onGetMessage(CanFrame frame);
 };
 
+#endif // LIB_SOCKET_CAN
 
 #endif // SOCKETCAN_H
