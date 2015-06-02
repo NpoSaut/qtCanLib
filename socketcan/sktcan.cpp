@@ -1,11 +1,11 @@
 #if defined LIB_SOCKET_CAN
 
+#include <linux/socket.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
-#include <linux/can.h>
 #include <linux/can/raw.h>
 #include <unistd.h>
 

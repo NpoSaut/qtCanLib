@@ -1,7 +1,7 @@
 #ifdef LIB_SOCKET_CAN
 
+#include <linux/socket.h>
 #include "unistd.h"
-
 
 #include "cDoodahLib/masqarade.h"
 #include "sktcan.h"
