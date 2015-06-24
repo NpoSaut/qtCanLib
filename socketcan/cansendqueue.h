@@ -4,7 +4,7 @@
 #ifdef LIB_SOCKET_CAN
 
 #include "qtDoodahLib/queues.h"
-#include "../canframe.h"
+#include "../CanFrame.h"
 
 namespace CanInternals
 {

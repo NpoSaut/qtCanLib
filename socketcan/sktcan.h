@@ -11,7 +11,7 @@
 #include <QString>
 #include <QThread>
 
-#include "../canframe.h"
+#include "../CanFrame.h"
 
 namespace CanInternals
 {

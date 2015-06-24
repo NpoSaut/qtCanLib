@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QMetaType>
-#include "canframe.h"
+#include "CanFrame.h"
 
 class Can : public QObject
 {
