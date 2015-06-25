@@ -3,7 +3,7 @@
 
 #include "qtDoodahLib/IThreadWorker.h"
 #include "qtDoodahLib/queues/IThreadSafeQueue.h"
-#include "../IBlockedSender.h"
+#include "../drivers/IBlockedSender.h"
 
 namespace AsyncCanInternals {
 

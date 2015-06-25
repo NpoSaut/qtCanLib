@@ -1,7 +1,7 @@
 #ifndef IBLOCKEDRECEIVER_H
 #define IBLOCKEDRECEIVER_H
 
-#include "CanFrame.h"
+#include "../CanFrame.h"
 
 class IBlockedReceiver
 {

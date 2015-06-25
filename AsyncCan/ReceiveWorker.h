@@ -2,7 +2,7 @@
 #define RECEIVEWORKER_H
 
 #include "qtDoodahLib/IThreadWorker.h"
-#include "../IBlockedReceiver.h"
+#include "../drivers/IBlockedReceiver.h"
 
 namespace AsyncCanInternals {
 
