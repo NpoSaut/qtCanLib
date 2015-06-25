@@ -1,20 +1,16 @@
 #ifndef DUMMYCAN_H
 #define DUMMYCAN_H
 
-#include "qtCanLib/can.h"
+#include "ICan.h"
 
-// Класс-заглушка для Can-а: ничего не отправляет и ничего не передаёт
-class DummyCan : public Can
+class DummyCan : public ICan
 {
     Q_OBJECT
 public:
-    explicit DummyCan(QObject *parent = 0)
-        : Can (parent)
-    { }
+    explicit DummyCan(QObject *parent = 0);
 
-protected:
-    void onTransmitMessage(CanFrame frame) { }
-    void onGetMessage(CanFrame frame) { }
+public slots:
+    void send (CanFrame);
 };
 
 #endif // DUMMYCAN_H
