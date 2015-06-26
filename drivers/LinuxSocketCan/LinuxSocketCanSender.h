@@ -12,7 +12,8 @@ class LinuxSocketCanSender : public IBlockedSender
 public:
     LinuxSocketCanSender(LinuxSocketCanSocket *socket);
 
-    virtual void send (CanFrame frame);
+    virtual void send (QVector<CanFrame> frames);
+    virtual int getCapacity ();
 
 private:
     LinuxSocketCanSocket *socket;

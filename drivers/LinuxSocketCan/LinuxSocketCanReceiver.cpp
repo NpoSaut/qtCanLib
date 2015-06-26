@@ -6,11 +6,15 @@ LinuxSocketCanReceiver::LinuxSocketCanReceiver(LinuxSocketCanSocket *socket)
     : socket (socket)
 { }
 
-CanFrame LinuxSocketCanReceiver::receive()
+QVector<CanFrame> LinuxSocketCanReceiver::receive()
 {
+    QVector<CanFrame> frames;
+
     can_frame linuxFrame;
-    while ( ::read(socket->number, &linuxFrame, sizeof(struct can_frame)) < 0 );
-    return convert (linuxFrame);
+    if ( ::read(socket->number, &linuxFrame, sizeof(struct can_frame)) >= 0 )
+        frames.append(convert (linuxFrame));
+
+    return frames;
 }
 
 CanFrame LinuxSocketCanReceiver::convert(const can_frame &socketFrame)

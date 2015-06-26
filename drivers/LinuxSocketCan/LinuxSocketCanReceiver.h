@@ -12,7 +12,7 @@ class LinuxSocketCanReceiver : public IBlockedReceiver
 public:
     LinuxSocketCanReceiver(LinuxSocketCanSocket *socket);
 
-    virtual CanFrame receive ();
+    virtual QVector<CanFrame> receive ();
 
 private:
     LinuxSocketCanSocket *socket;

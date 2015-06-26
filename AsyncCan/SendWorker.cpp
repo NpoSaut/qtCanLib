@@ -11,6 +11,13 @@ SendWorker::SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue
 void SendWorker::run()
 {
     forever {
-        sender->send(queue->dequeue());
+        QVector<CanFrame> frames;
+        frames.append (queue->dequeue()); // Первый ждём всегда
+
+        int capacity = sender->getCapacity();
+        for (int i = 1; i < capacity && !queue->isEmpty(); i++)
+            frames.append (queue->dequeue());
+
+        sender->send(frames);
     }
 }

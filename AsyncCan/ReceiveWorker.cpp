@@ -10,6 +10,8 @@ ReceiveWorker::ReceiveWorker(IBlockedReceiver *receiver, QObject *parent)
 void ReceiveWorker::run()
 {
     forever {
-        emit received (receiver->receive());
+        auto frames = receiver->receive();
+        for (auto &f : frames)
+            emit received(f);
     }
 }

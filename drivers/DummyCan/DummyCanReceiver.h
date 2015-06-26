@@ -7,10 +7,9 @@ class DummyCanReceiver : public IBlockedReceiver
 {
 public:
     DummyCanReceiver() {}
-    virtual CanFrame receive ()
+    virtual QVector<CanFrame> receive ()
     {
-        forever; // loop
-        return CanFrame (); // for silent
+        return QVector<CanFrame> ();
     }
 };
 
