@@ -12,7 +12,7 @@ class LinuxSocketCanSender : public IBlockedSender
 public:
     LinuxSocketCanSender(LinuxSocketCanSocket *socket);
 
-    virtual void send (QVector<CanFrame> frames);
+    virtual void send (const QVector<CanFrame> &frames);
     virtual int getCapacity ();
 
 private:

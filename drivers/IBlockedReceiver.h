@@ -8,7 +8,7 @@
 class IBlockedReceiver
 {
 public:
-    virtual QVector<CanFrame> receive () = 0;
+    virtual const QVector<CanFrame> &receive () = 0;
 };
 
 #endif // IBLOCKEDRECEIVER_H

@@ -6,11 +6,11 @@
 class DummyCanReceiver : public IBlockedReceiver
 {
 public:
-    DummyCanReceiver() {}
-    virtual QVector<CanFrame> receive ()
-    {
-        return QVector<CanFrame> ();
-    }
+    DummyCanReceiver() : frames() {}
+    virtual const QVector<CanFrame> &receive () { return frames; }
+
+private:
+    QVector<CanFrame> frames;
 };
 
 #endif // DUMMYCANRECEIVER_H

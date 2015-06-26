@@ -10,12 +10,13 @@
 class LinuxSocketCanReceiver : public IBlockedReceiver
 {
 public:
-    LinuxSocketCanReceiver(LinuxSocketCanSocket *socket);
+    LinuxSocketCanReceiver(LinuxSocketCanSocket *socket, int capacity = 1);
 
-    virtual QVector<CanFrame> receive ();
+    virtual const QVector<CanFrame> &receive ();
 
 private:
     LinuxSocketCanSocket *socket;
+    QVector<CanFrame> frames;
     CanFrame convert (const struct can_frame &socketFrame);
 };
 

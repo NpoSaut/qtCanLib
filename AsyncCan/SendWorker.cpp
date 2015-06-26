@@ -5,13 +5,14 @@ using namespace AsyncCanInternals;
 SendWorker::SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue, QObject *parent)
     : IThreadWorker (parent),
       sender (sender),
-      queue (queue)
+      queue (queue),
+      frames ()
 { }
 
 void SendWorker::run()
 {
     forever {
-        QVector<CanFrame> frames;
+        frames.resize(0);
         frames.append (queue->dequeue()); // Первый ждём всегда
 
         int capacity = sender->getCapacity();

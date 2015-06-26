@@ -20,6 +20,7 @@ public slots:
 private:
     IBlockedSender *sender;
     IThreadSafeQueue<CanFrame> *queue;
+    QVector<CanFrame> frames;
 };
 
 }

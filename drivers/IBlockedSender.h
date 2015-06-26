@@ -8,7 +8,7 @@
 class IBlockedSender
 {
 public:
-    virtual void send (QVector<CanFrame> frames) = 0;
+    virtual void send (const QVector<CanFrame> &frames) = 0;
     virtual int getCapacity () = 0;
 };
 

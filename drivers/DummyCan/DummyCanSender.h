@@ -7,7 +7,7 @@ class DummyCanSender : public IBlockedSender
 {
 public:
     DummyCanSender() {}
-    virtual void send (QVector<CanFrame> frames) { Q_UNUSED(frames); }
+    virtual void send (const QVector<CanFrame> &frames) { Q_UNUSED(frames); }
     virtual int getCapacity () { return 1000; }
 };
 

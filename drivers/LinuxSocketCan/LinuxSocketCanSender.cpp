@@ -6,7 +6,7 @@ LinuxSocketCanSender::LinuxSocketCanSender(LinuxSocketCanSocket *socket)
     : socket (socket)
 { }
 
-void LinuxSocketCanSender::send(QVector<CanFrame> frames)
+void LinuxSocketCanSender::send(const QVector<CanFrame> &frames)
 {
     can_frame linuxFrame = convert (frames[0]);
     while ( write(socket->number, &linuxFrame, sizeof(struct can_frame)) < 0 );

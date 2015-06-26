@@ -2,13 +2,16 @@
 
 #include <unistd.h>
 
-LinuxSocketCanReceiver::LinuxSocketCanReceiver(LinuxSocketCanSocket *socket)
-    : socket (socket)
-{ }
-
-QVector<CanFrame> LinuxSocketCanReceiver::receive()
+LinuxSocketCanReceiver::LinuxSocketCanReceiver(LinuxSocketCanSocket *socket, int capacity)
+    : socket (socket),
+      frames ()
 {
-    QVector<CanFrame> frames;
+    frames.reserve(capacity);
+}
+
+const QVector<CanFrame> &LinuxSocketCanReceiver::receive()
+{
+    frames.resize(0);
 
     can_frame linuxFrame;
     if ( ::read(socket->number, &linuxFrame, sizeof(struct can_frame)) >= 0 )
