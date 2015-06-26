@@ -1,8 +1,10 @@
 #ifndef LINUXSOCKETCANSENDER_H
 #define LINUXSOCKETCANSENDER_H
 
-#include <sys/socket.h> // for sa_familty_t in linux/can.h
-#include <linux/can.h>
+extern "C"
+{
+#include "cSocketCanLib/src/SocketCanLib.h"
+}
 
 #include "../IBlockedSender.h"
 #include "LinuxSocketCanSocket.h"
@@ -17,7 +19,7 @@ public:
 
 private:
     LinuxSocketCanSocket *socket;
-
+    QVector<can_frame> driverFrames;
     can_frame convert (const CanFrame &canFrame);
 };
 

@@ -1,23 +1,23 @@
 #include "LinuxSocketCanReceiver.h"
 
-#include <unistd.h>
-
-LinuxSocketCanReceiver::LinuxSocketCanReceiver(LinuxSocketCanSocket *socket, int capacity)
+LinuxSocketCanReceiver::LinuxSocketCanReceiver(LinuxSocketCanSocket *socket)
     : socket (socket),
-      frames ()
+      outputFrames (),
+      driverFrames ()
 {
-    frames.reserve(capacity);
+    outputFrames.reserve(socket->rxCapacity);
+    driverFrames.reserve(socket->rxCapacity);
 }
 
 const QVector<CanFrame> &LinuxSocketCanReceiver::receive()
 {
-    frames.resize(0);
+    int readNumber = SocketRead(socket->number, driverFrames.data(), socket->rxCapacity, 1000);
+    outputFrames.resize(readNumber);
 
-    can_frame linuxFrame;
-    if ( ::read(socket->number, &linuxFrame, sizeof(struct can_frame)) >= 0 )
-        frames.append(convert (linuxFrame));
+    for (int i = 0; i < readNumber; i ++)
+        outputFrames[i] = convert(driverFrames[i].Frame);
 
-    return frames;
+    return outputFrames;
 }
 
 CanFrame LinuxSocketCanReceiver::convert(const can_frame &socketFrame)

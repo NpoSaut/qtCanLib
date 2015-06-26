@@ -9,6 +9,6 @@ LinuxSocketCanReceiverFactory::LinuxSocketCanReceiverFactory(QString interface)
 
 IBlockedReceiver *LinuxSocketCanReceiverFactory::produce()
 {
-    auto socket = LinuxSocketCanSocketFactory::produce(interface);
+    auto socket = LinuxSocketCanSocketFactory::produce(interface, 50, 3);
     return new LinuxSocketCanReceiver (socket);
 }

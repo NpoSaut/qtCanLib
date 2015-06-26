@@ -3,18 +3,23 @@
 #include <unistd.h>
 
 LinuxSocketCanSender::LinuxSocketCanSender(LinuxSocketCanSocket *socket)
-    : socket (socket)
-{ }
+    : socket (socket),
+      driverFrames ()
+{
+    driverFrames.reserve(socket->txCapacity);
+}
 
 void LinuxSocketCanSender::send(const QVector<CanFrame> &frames)
 {
-    can_frame linuxFrame = convert (frames[0]);
-    while ( write(socket->number, &linuxFrame, sizeof(struct can_frame)) < 0 );
+    for (int i = 0; i < frames.count(); i ++)
+        driverFrames[i] = convert (frames[i]);
+
+    while ( SocketWrite(socket->number, driverFrames.data(), frames.count()) < 0 );
 }
 
 int LinuxSocketCanSender::getCapacity()
 {
-    return 1;
+    return socket->txCapacity;
 }
 
 can_frame LinuxSocketCanSender::convert(const CanFrame &canFrame)

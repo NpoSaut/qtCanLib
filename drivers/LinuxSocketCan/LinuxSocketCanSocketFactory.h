@@ -9,7 +9,7 @@ class LinuxSocketCanSocketFactory
 public:
     LinuxSocketCanSocketFactory();
 
-    static LinuxSocketCanSocket *produce (QString interfaceName);
+    static LinuxSocketCanSocket *produce (QString interfaceName, int rxCapacity, int txCapacity);
 
 };
 

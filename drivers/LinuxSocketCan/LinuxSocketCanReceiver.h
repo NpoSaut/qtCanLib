@@ -1,8 +1,10 @@
 #ifndef LINUXSOCKETCANRECEIVER_H
 #define LINUXSOCKETCANRECEIVER_H
 
-#include <sys/socket.h> // for sa_familty_t in linux/can.h
-#include <linux/can.h>
+extern "C"
+{
+#include "cSocketCanLib/src/SocketCanLib.h"
+}
 
 #include "../IBlockedReceiver.h"
 #include "LinuxSocketCanSocket.h"
@@ -10,13 +12,14 @@
 class LinuxSocketCanReceiver : public IBlockedReceiver
 {
 public:
-    LinuxSocketCanReceiver(LinuxSocketCanSocket *socket, int capacity = 1);
+    LinuxSocketCanReceiver(LinuxSocketCanSocket *socket);
 
     virtual const QVector<CanFrame> &receive ();
 
 private:
     LinuxSocketCanSocket *socket;
-    QVector<CanFrame> frames;
+    QVector<CanFrame> outputFrames;
+    QVector<FrameBag> driverFrames;
     CanFrame convert (const struct can_frame &socketFrame);
 };
 
