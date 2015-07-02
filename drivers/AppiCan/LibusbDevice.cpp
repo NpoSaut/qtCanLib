@@ -2,33 +2,24 @@
 
 #include <iostream>
 
-LibusbDevice::LibusbDevice(libusb_device_handle *handle, bool debug)
-    : handle (handle), debug (debug), vid (-1), pid (-1), claimed (false)
+LibusbDevice::LibusbDevice(libusb_device_handle *handle, int interface, bool debug)
+    : handle (handle), interface (interface), debug (debug), claimed (false)
 {
-    libusb_device_descriptor *desc;
-    if ( libusb_get_device_descriptor( libusb_get_device(handle), desc ) )
-    {
-        vid = desc->idVendor;
-        pid = desc->idProduct;
-    }
-
     if (libusb_kernel_driver_active(handle, 0) == 1)
         libusb_detach_kernel_driver(handle, 0);
 
-    claimed = libusb_claim_interface(handle, 0) < 0;
+    claimed = libusb_claim_interface(handle, interface) == 0;
     if (!claimed)
         if (debug)
-            std::cerr << "LibUSB: Cannot Claim Interface 0 for device ("
-                      << vid << ", " << pid << ")" << std::endl;
+            std::cerr << "LibUSB: Cannot claim interface " << interface << std::endl;
 }
 
 LibusbDevice::~LibusbDevice()
 {
     if (claimed)
-        if ( libusb_release_interface(handle, 0) != 0 )
+        if ( libusb_release_interface(handle, interface) != 0 )
             if (debug)
-                std::cerr << "Cannot Release Interface 0 for device ("
-                          << vid << ", " << pid << ")" << std::endl;
+                std::cerr << "Cannot Release Interface " << interface << std::endl;
 
     libusb_close(handle);
 }
@@ -41,8 +32,7 @@ bool LibusbDevice::send(uint8_t endpoint, const std::vector<uint8_t> &data, unsi
 
     if (!success)
         if (debug)
-            std::cerr << "LibUSB: Cannot send to device ("
-                      << vid << ", " << pid << "), error code:" << ret << std::endl;
+            std::cerr << "LibUSB: Cannot send to device, error code:" << ret << std::endl;
     return success;
 }
 
@@ -54,8 +44,7 @@ bool LibusbDevice::receieve(uint8_t endpoint, std::vector<uint8_t> &data, unsign
 
     if (!success)
         if (debug)
-            std::cerr << "LibUSB: Cannot receieve from device ("
-                      << vid << ", " << pid << "), error code:" << ret << std::endl;
+            std::cerr << "LibUSB: Cannot receieve from device, error code:" << ret << std::endl;
 
     data.resize(actual);
     return success;

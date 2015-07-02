@@ -17,7 +17,7 @@ LibusbDeviceFactory::~LibusbDeviceFactory()
     libusb_exit(context);
 }
 
-LibusbDevice *LibusbDeviceFactory::produce(uint16_t vid, uint16_t pid)
+LibusbDevice *LibusbDeviceFactory::produce(uint16_t vid, uint16_t pid, int interface)
 {
     libusb_device **devs;
     ssize_t number = libusb_get_device_list(context, &devs);
@@ -37,5 +37,5 @@ LibusbDevice *LibusbDeviceFactory::produce(uint16_t vid, uint16_t pid)
         return nullptr;
     }
     else
-        return new LibusbDevice (handle, debugLevel);
+        return new LibusbDevice (handle, interface, debugLevel);
 }

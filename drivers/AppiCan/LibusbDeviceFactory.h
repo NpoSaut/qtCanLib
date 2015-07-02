@@ -15,7 +15,7 @@ public:
     LibusbDeviceFactory(int debugLevel = 1);
     ~LibusbDeviceFactory();
 
-    LibusbDevice *produce (uint16_t vid, uint16_t pid);
+    LibusbDevice *produce (uint16_t vid, uint16_t pid, int interface);
 
 private:
     libusb_context *context;

@@ -17,11 +17,11 @@ public:
     bool receieve (uint8_t endpoint, std::vector<uint8_t> &data, unsigned timeoutMs = 0);
 
 private:
-    LibusbDevice(libusb_device_handle *handle, bool debug);
+    LibusbDevice(libusb_device_handle *handle, int interface, bool debug);
 
     libusb_device_handle *handle;
+    int interface;
     bool debug;
-    int vid, pid;
     bool claimed;
 
 friend class LibusbDeviceFactory;
