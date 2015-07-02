@@ -19,7 +19,7 @@ public:
 private:
     LibusbDevice(libusb_device_handle *handle, bool debug);
 
-    libusb_device *handle;
+    libusb_device_handle *handle;
     bool debug;
     int vid, pid;
     bool claimed;

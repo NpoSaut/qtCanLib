@@ -13,13 +13,13 @@ LibusbDevice::LibusbDevice(libusb_device_handle *handle, bool debug)
     }
 
     if (libusb_kernel_driver_active(handle, 0) == 1)
-        libusb_detach_kernel_driver(dev_handle, 0);
+        libusb_detach_kernel_driver(handle, 0);
 
-    claimed = libusb_claim_interface(dev_handle, 0) < 0;
+    claimed = libusb_claim_interface(handle, 0) < 0;
     if (!claimed)
         if (debug)
             std::cerr << "LibUSB: Cannot Claim Interface 0 for device ("
-                      << vid << ", " << pid << ")" << endl;
+                      << vid << ", " << pid << ")" << std::endl;
 }
 
 LibusbDevice::~LibusbDevice()
@@ -28,7 +28,7 @@ LibusbDevice::~LibusbDevice()
         if ( libusb_release_interface(handle, 0) != 0 )
             if (debug)
                 std::cerr << "Cannot Release Interface 0 for device ("
-                          << vid << ", " << pid << ")" << endl;
+                          << vid << ", " << pid << ")" << std::endl;
 
     libusb_close(handle);
 }
@@ -36,26 +36,26 @@ LibusbDevice::~LibusbDevice()
 bool LibusbDevice::send(uint8_t endpoint, const std::vector<uint8_t> &data, unsigned timeoutMs)
 {
     int actual = -1;
-    int ret = libusb_bulk_transfer(handle, endpoint & LIBUSB_ENDPOINT_OUT, data.data(), data.size(), actual, timeoutMs);
+    int ret = libusb_bulk_transfer(handle, endpoint & LIBUSB_ENDPOINT_OUT, const_cast<uint8_t *> (data.data()), data.size(), &actual, timeoutMs);
     bool success = (ret == 0 && data.size() == actual);
 
     if (!success)
         if (debug)
             std::cerr << "LibUSB: Cannot send to device ("
-                      << vid << ", " << pid << "), error code:" << ret << endl;
+                      << vid << ", " << pid << "), error code:" << ret << std::endl;
     return success;
 }
 
 bool LibusbDevice::receieve(uint8_t endpoint, std::vector<uint8_t> &data, unsigned timeoutMs)
 {
     int actual = -1;
-    int ret = libusb_bulk_transfer(handle, endpoint | LIBUSB_ENDPOINT_IN, data.data(), data.size(), actual, timeoutMs);
+    int ret = libusb_bulk_transfer(handle, endpoint | LIBUSB_ENDPOINT_IN, data.data(), data.size(), &actual, timeoutMs);
     bool success = (ret == 0);
 
     if (!success)
         if (debug)
             std::cerr << "LibUSB: Cannot receieve from device ("
-                      << vid << ", " << pid << "), error code:" << ret << endl;
+                      << vid << ", " << pid << "), error code:" << ret << std::endl;
 
     data.resize(actual);
     return success;
