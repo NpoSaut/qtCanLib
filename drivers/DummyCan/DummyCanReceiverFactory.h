@@ -8,7 +8,7 @@ class DummyCanReceiverFactory : public IBlockedReceiverFactory
 {
 public:
     DummyCanReceiverFactory() { }
-    IBlockedReceiver *produce () { new DummyCanReceiver; }
+    IBlockedReceiver *produce () { return new DummyCanReceiver; }
 };
 
 #endif // DUMMYCANRECEIVERFACTORY_H
