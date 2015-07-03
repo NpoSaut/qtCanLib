@@ -21,6 +21,7 @@ private:
     IBlockedSender *sender;
     IThreadSafeQueue<CanFrame> *queue;
     QVector<CanFrame> frames;
+    int capacity;
 };
 
 }

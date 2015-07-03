@@ -6,7 +6,8 @@ SendWorker::SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue
     : IThreadWorker (parent),
       sender (sender),
       queue (queue),
-      frames ()
+      frames (),
+      capacity (0)
 { }
 
 void SendWorker::run()
@@ -15,7 +16,10 @@ void SendWorker::run()
         frames.resize(0);
         frames.append (queue->dequeue()); // Первый ждём всегда
 
-        int capacity = sender->getCapacity();
+        do
+            capacity = sender->getCapacity();
+        while (capacity <= 0);
+
         for (int i = 1; i < capacity && !queue->isEmpty(); i++)
             frames.append (queue->dequeue());
 
