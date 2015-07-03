@@ -19,7 +19,7 @@ AppiBlockCan1::~AppiBlockCan1()
 void AppiBlockCan1::parseReceivedBuffer(const std::vector<uint8_t> &buffer, QVector<CanFrame> &frames, int &sendCapacity)
 {
     frames.resize( buffer[6] );
-    sendCapacity = (int (buffer[18]) << 8 ) + buffer[17];
+    sendCapacity = 50 - (int (buffer[18]) << 8 ) + buffer[17];
 
     auto i = buffer.begin() + 24;
     for (auto &f : frames)
