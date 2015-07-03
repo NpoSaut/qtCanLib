@@ -27,7 +27,7 @@ LibusbDevice::~LibusbDevice()
 bool LibusbDevice::send(uint8_t endpoint, const std::vector<uint8_t> &data, unsigned timeoutMs)
 {
     int actual = -1;
-    int ret = libusb_bulk_transfer(handle, endpoint & LIBUSB_ENDPOINT_OUT, const_cast<uint8_t *> (data.data()), data.size(), &actual, timeoutMs);
+    int ret = libusb_bulk_transfer(handle, endpoint & ~LIBUSB_ENDPOINT_IN, const_cast<uint8_t *> (data.data()), data.size(), &actual, timeoutMs);
     bool success = (ret == 0 && data.size() == actual);
 
     if (!success)
