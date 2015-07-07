@@ -2,6 +2,7 @@
 #define CANFRAME_H
 
 #include <vector>
+#include <string>
 
 class CanFrame
 {
@@ -23,6 +24,8 @@ public:
     // !WARNING! --< CAN message byte numbers start from 1 >-- !WARNING!
     unsigned char &operator[] (int index);
     const unsigned char &operator[] (int index) const;
+
+    std::string toString () const;
 
 private:
     std::vector<unsigned char> data;

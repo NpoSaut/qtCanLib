@@ -1,5 +1,8 @@
 #include "CanFrame.h"
 
+#include <sstream>
+#include <iomanip>
+
 using namespace std;
 
 CanFrame::CanFrame(int id, int size, const vector<unsigned char> &data)
@@ -15,7 +18,7 @@ CanFrame::CanFrame(int descriptor, const vector<unsigned char> &data)
 }
 
 CanFrame::CanFrame(int descriptor)
-    : data(std::vector<unsigned char>(getSizeFromDescriptor(descriptor), 0))
+    : data(vector<unsigned char>(getSizeFromDescriptor(descriptor), 0))
 {
     setDescriptor(descriptor);
 }
@@ -64,6 +67,15 @@ unsigned char &CanFrame::operator [](int index)
 const unsigned char &CanFrame::operator [](int index) const
 {
     return data[index-1];
+}
+
+string CanFrame::toString() const
+{
+    stringstream ss;
+    ss << "[" << setfill('0') << setw(4) << hex << getDescriptor() << "] : ";
+    for (auto &d : data)
+        ss << setfill('0') << setw(2) << hex << int(d) << " ";
+    return ss.str();
 }
 
 int CanFrame::getSizeFromDescriptor(int descriptor)
