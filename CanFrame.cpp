@@ -69,6 +69,16 @@ const unsigned char &CanFrame::operator [](int index) const
     return data[index-1];
 }
 
+bool CanFrame::operator==(CanFrame b) const
+{
+    return id == b.id && data == b.data;
+}
+
+bool CanFrame::operator!=(CanFrame b) const
+{
+    return !operator==(b);
+}
+
 string CanFrame::toString() const
 {
     stringstream ss;

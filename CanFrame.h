@@ -25,6 +25,9 @@ public:
     unsigned char &operator[] (int index);
     const unsigned char &operator[] (int index) const;
 
+    bool operator== (CanFrame b) const;
+    bool operator!= (CanFrame b) const;
+
     std::string toString () const;
 
 private:
