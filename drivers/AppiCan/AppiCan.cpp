@@ -1,5 +1,7 @@
 #include "AppiCan.h"
 
+#include <unistd.h>
+
 AppiCan::AppiCan(LibusbDevice *device, int receiveBufferSize, int sendBufferSize, uint8_t receiveEndpoint, uint8_t sendEndpoint, int maxReceivedFrames)
     : device (device),
       receiveEndpoint (receiveEndpoint),
@@ -27,7 +29,10 @@ const QVector<CanFrame> &AppiCan::receive()
         setCapacity(newCapacity);
     }
     else
+    {
         receivedFrames.resize(0);
+        usleep(1000);
+    }
 
     usbMutex.unlock();
     return receivedFrames;
