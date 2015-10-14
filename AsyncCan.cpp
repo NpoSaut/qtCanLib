@@ -7,8 +7,8 @@ using namespace AsyncCanInternals;
 AsyncCan::AsyncCan(IBlockedReceiverFactory *receiverFactory, IBlockedSenderFactory *senderFactory, QObject *parent) :
     ICan(parent),
     queue (),
-    receiveThread (new ReceiveWorker(receiverFactory->produce(), 0), this),
-    sendThread (new SendWorker(senderFactory->produce(), &queue, 0), this)
+    receiveThread (new ReceiveWorker(receiverFactory->produce()), this),
+    sendThread (new SendWorker(senderFactory->produce(), &queue), this)
 {
     QObject::connect (receiveThread.worker, SIGNAL(received(CanFrame)), this, SLOT(pushReceiveSignal(CanFrame)), Qt::QueuedConnection);
 }

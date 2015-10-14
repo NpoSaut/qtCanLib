@@ -2,8 +2,8 @@
 
 using namespace AsyncCanInternals;
 
-SendWorker::SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue, QObject *parent)
-    : IThreadWorker (parent),
+SendWorker::SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue)
+    : IThreadWorker (),
       sender (sender),
       queue (queue),
       frames (),

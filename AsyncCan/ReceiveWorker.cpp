@@ -2,8 +2,8 @@
 
 using namespace AsyncCanInternals;
 
-ReceiveWorker::ReceiveWorker(IBlockedReceiver *receiver, QObject *parent)
-    : IThreadWorker (parent),
+ReceiveWorker::ReceiveWorker(IBlockedReceiver *receiver)
+    : IThreadWorker (),
       receiver (receiver)
 { }
 

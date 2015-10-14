@@ -11,7 +11,7 @@ class ReceiveWorker : public IThreadWorker
 {
     Q_OBJECT
 public:
-    explicit ReceiveWorker(IBlockedReceiver *receiver, QObject *parent = 0);
+    explicit ReceiveWorker(IBlockedReceiver *receiver);
 
 signals:
     void received (CanFrame );

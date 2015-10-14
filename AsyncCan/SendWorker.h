@@ -12,7 +12,7 @@ class SendWorker : public IThreadWorker
 {
     Q_OBJECT
 public:
-    explicit SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue, QObject *parent = 0);
+    explicit SendWorker(IBlockedSender *sender, IThreadSafeQueue<CanFrame> *queue);
 
 public slots:
     void run ();
