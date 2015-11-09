@@ -64,14 +64,14 @@ Socket::Socket(QString interfaceName)
 
     // Определяем индекс интерфейса
     struct ifreq ifr;
-    strcpy(ifr.ifr_name, interfaceName.toStdString ().c_str ());
+    strcpy(ifr.ifr_name, interfaceName.toUtf8().data());
 
     // Полученный индес будет записан в поле ifr.ifr_ifindex
     ioctl(number, SIOCGIFINDEX, &ifr);
     if(ifr.ifr_ifindex < 0)
     {
         int errsv = errno;
-        qDebug("Не найден интерфейс %s, ошибка: %d\n", interfaceName.toStdString ().c_str (), errsv);
+        qDebug("Не найден интерфейс %s, ошибка: %d\n", interfaceName.toUtf8().data(), errsv);
         return;
     }
     qDebug("Найден CAN интерфейс: %d\n", ifr.ifr_ifindex);
