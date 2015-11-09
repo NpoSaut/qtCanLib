@@ -2,7 +2,10 @@
 #define SKTCAN_H
 
 #if defined LIB_SOCKET_CAN
-
+#include <linux/socket.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <linux/can.h>
 
 #include <QString>
